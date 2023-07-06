@@ -1,0 +1,15 @@
+mainStructure: "#[] expectedResponseSchema.projectSection"
+
+projectSection:
+  id: "#string"
+  parent_id: "##string"
+  order: "#number"
+  color: "#string"
+  comment_count: "#number"
+  is_shared: "#boolean"
+  is_favorite: "#boolean"
+  is_inbox_project: "#boolean"
+  is_team_inbox: "#boolean"
+  url: "#string"
+  view_style: "#string"
+  name: "#string"

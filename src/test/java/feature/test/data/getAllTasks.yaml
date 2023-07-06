@@ -1,0 +1,28 @@
+mainStructure: "#[] expectedResponseSchema.taskSection"
+
+taskSection:
+  creator_id: "#string"
+  created_at: "#string? dateTimeUtil.isRFC3339DateTimeFormat(_)"
+  assignee_id: "##string"
+  assigner_id: "##string"
+  comment_count: "#number"
+  is_completed: "#boolean"
+  content: "#string"
+  description: "##string"
+  due: "#(expectedResponseSchema.dueSection)"
+  duration: "#null"
+  id: "#string"
+  labels: "#array"
+  order: "#number"
+  priority: "#number? _ >= 1 && _<=4"
+  project_id: "#string"
+  section_id: "##string"
+  parent_id: "#null"
+  url: "#regex^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$"
+
+dueSection:
+  date: "#string? dateTimeUtil.isValidDateTime(_, 'yyyy-MM-dd')"
+  is_recurring: "#boolean"
+  string: "#string"
+  lang: "#string"
+  datetime: "##string? dateTimeUtil.isRFC3339DateTimeFormat(_)"

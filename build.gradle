@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+}
+
+ext {
+    karateVersion = '1.4.0'
+    springBootVersion = '2.6.5'
+    commonIOVersion = '2.11.0'
+    cucumberReportingVersion = '5.7.5'
+    javaFakerVersion = '1.0.2'
+    snakeYamlVersion = '2.0'
+}
+
+configurations.all {
+    resolutionStrategy {
+        resolutionStrategy.eachDependency {
+            if(requested.module.toString() == "org.yaml:snakeyaml") {
+                artifactSelection {
+                    selectArtifact(DependencyArtifact.DEFAULT_TYPE, null, null)
+                }
+            }
+        }
+        preferProjectModules()    
+        }
+        exclude group: 'log4j', module: 'log4j'    
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'    
+        exclude group: 'org.slf4j', module: 'jcl-over-slf4j'    
+        exclude group: 'org.slf4j', module: 'jul-to-slf4j'    
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
+
+dependencies {
+    testImplementation "com.intuit.karate:karate-junit5:${karateVersion}"
+    testImplementation group: "org.springframework.boot", name: "spring-boot-starter-data-mongodb", version: "${springBootVersion}"
+    testImplementation group: "org.springframework.boot", name: "spring-boot-starter-test", version: "${springBootVersion}"
+    testImplementation group: "org.springframework.boot", name: "spring-boot-starter-data-jpa", version: "${springBootVersion}"
+    testImplementation group: "commons-io", name: "commons-io", version: "${commonIOVersion}"
+    testImplementation group: "net.masterthought", name: "cucumber-reporting", version: "${cucumberReportingVersion}"
+    testImplementation group: "com.github.javafaker", name: "javafaker", version: "${javaFakerVersion}"
+    testImplementation group: "org.yaml", name: "snakeyaml", version: "${snakeYamlVersion}"
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    outputs.upToDateWhen { false }
+}
+
+repositories {
+    mavenCentral()
+    // mavenLocal()
+}
+
+task karateDebug(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    main = 'com.intuit.karate.cli.Main'
+}
